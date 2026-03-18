@@ -18,6 +18,9 @@ src-tauri/gen/
 # OS
 .DS_Store
 
+# Electron
+release/
+
 # makepkg
 pkg/
 src/markoff-*/

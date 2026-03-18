@@ -11,12 +11,12 @@ const dataUrlCache = new Map()
 const isRelativeSrc = src =>
 	src && !src.startsWith('http') && !src.startsWith('blob:') && !src.startsWith('data:') && !src.startsWith('/')
 
-const resolveImageTauri = async (baseDir, relativePath) => {
+const resolveImageNative = async (baseDir, relativePath) => {
+	if (window.__ELECTRON__) {
+		return window.__ELECTRON__.readFileAsDataUrl(baseDir, relativePath)
+	}
 	const { invoke } = await import('@tauri-apps/api/core')
-	return invoke('read_file_as_data_url', {
-		baseDir: baseDir,
-		relativePath: relativePath,
-	})
+	return invoke('read_file_as_data_url', { baseDir, relativePath })
 }
 
 const resolveImageWeb = async (dirHandle, relativePath) => {
@@ -38,7 +38,7 @@ const handleLocalImages = container => {
 	const baseDir = window.__fileBaseDir
 	if (!baseDir) return
 
-	const isTauri = typeof baseDir === 'string'
+	const isNative = typeof baseDir === 'string'
 	const images = container.querySelectorAll('img')
 	for (const img of images) {
 		const src = img.getAttribute('src')
@@ -49,8 +49,8 @@ const handleLocalImages = container => {
 			continue
 		}
 
-		const resolve = isTauri
-			? resolveImageTauri(baseDir, src)
+		const resolve = isNative
+			? resolveImageNative(baseDir, src)
 			: resolveImageWeb(baseDir, src)
 
 		resolve

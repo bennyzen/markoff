@@ -363,7 +363,9 @@ const ACTIONS_CONFIG = [
 		gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2))',
 		showInToolbar: true,
 		handler: async () => {
-			if (window.__TAURI_INTERNALS__) {
+			if (window.__ELECTRON__) {
+				window.__ELECTRON__.quit()
+			} else if (window.__TAURI_INTERNALS__) {
 				const { invoke } = await import('@tauri-apps/api/core')
 				invoke('quit_app')
 			} else {

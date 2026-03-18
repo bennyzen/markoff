@@ -68,12 +68,23 @@ const boot = async () => {
 	})
 
 	// Handle files opened via OS "Open With"
-	if (window.__TAURI_INTERNALS__) {
-		const { invoke } = await import('@tauri-apps/api/core')
+	const native = window.__ELECTRON__ || window.__TAURI_INTERNALS__
+
+	if (native) {
+		const api = window.__ELECTRON__ || {
+			readFileText: async path => {
+				const { invoke } = await import('@tauri-apps/api/core')
+				return invoke('read_file_text', { path })
+			},
+			getPendingFile: async () => {
+				const { invoke } = await import('@tauri-apps/api/core')
+				return invoke('get_pending_file')
+			},
+		}
 
 		const openFileFromPath = async filePath => {
 			try {
-				const text = await invoke('read_file_text', { path: filePath })
+				const text = await api.readFileText(filePath)
 				const dir = filePath.replace(/[/\\][^/\\]+$/, '')
 				window.__launchedWithFile = true
 				window.__fileBaseDir = dir
@@ -85,7 +96,7 @@ const boot = async () => {
 		}
 
 		try {
-			const pendingFile = await invoke('get_pending_file')
+			const pendingFile = await api.getPendingFile()
 			if (pendingFile) {
 				await openFileFromPath(pendingFile)
 			} else {

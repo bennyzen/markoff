@@ -12,7 +12,27 @@ export const createKeyHandler = settingsDialog => e => {
 	const hasCtrl = e.ctrlKey || e.metaKey
 	const hasShift = e.shiftKey
 
-	// Special keys handled by regular hotkey system
+	// Zoom: Ctrl++ / Ctrl+- / Ctrl+0
+	if (hasCtrl && (e.key === '+' || e.key === '=' || e.key === '-' || e.key === '0')) {
+		e.preventDefault()
+		const el = document.getElementById('previewhtml')
+		const root = document.documentElement
+		if (!el) return
+		const current = parseFloat(getComputedStyle(el).fontSize)
+		if (e.key === '+' || e.key === '=') {
+			const next = Math.min(current + 1, 40)
+			el.style.fontSize = `${next}px`
+			root.style.fontSize = `${next}px`
+		} else if (e.key === '-') {
+			const next = Math.max(current - 1, 10)
+			el.style.fontSize = `${next}px`
+			root.style.fontSize = `${next}px`
+		} else {
+			el.style.fontSize = ''
+			root.style.fontSize = ''
+		}
+		return
+	}
 
 	// Build modifier string
 	let modifierString = ''
