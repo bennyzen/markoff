@@ -18,5 +18,11 @@ src-tauri/gen/
 # OS
 .DS_Store
 
+# makepkg
+pkg/
+src/markoff-*/
+*.pkg.tar.zst
+*.tar.gz
+
 # Tooling
 .superpowers/
