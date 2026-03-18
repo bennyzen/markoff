@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Markoff
+Comment=Minimal distraction-free Markdown reader & editor
+Exec=markoff %f
+Icon=markoff
+Terminal=false
+Type=Application
+Categories=Office;TextEditor;Utility;
+MimeType=text/markdown;text/x-markdown;

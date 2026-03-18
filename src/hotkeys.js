@@ -68,6 +68,13 @@ export const createKeyHandler = settingsDialog => e => {
 			return
 		}
 
+		// Special handling for quit
+		if (targetId === 'quit') {
+			const handlers = getActionHandlers()
+			handlers[targetId]?.()
+			return
+		}
+
 		// Special handling for toggle-editor-sync (button may not exist in DOM)
 		if (targetId === 'toggle-editor-sync') {
 			const handlers = getActionHandlers()

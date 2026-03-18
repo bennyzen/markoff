@@ -51,6 +51,11 @@ fn get_pending_file(state: tauri::State<'_, PendingFile>) -> Option<String> {
     state.0.lock().unwrap().take()
 }
 
+#[tauri::command]
+fn quit_app(app: tauri::AppHandle) {
+    app.exit(0);
+}
+
 struct PendingFile(Mutex<Option<String>>);
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -77,7 +82,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             read_file_as_data_url,
             read_file_text,
-            get_pending_file
+            get_pending_file,
+            quit_app
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -355,6 +355,22 @@ const ACTIONS_CONFIG = [
 			window.open('https://github.com/bennyzen/markoff', '_blank')
 		},
 	},
+	{
+		id: 'quit',
+		label: 'Quit',
+		icon: 'tabler:power',
+		hotkey: 'ctrl+q',
+		gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2))',
+		showInToolbar: true,
+		handler: async () => {
+			if (window.__TAURI_INTERNALS__) {
+				const { invoke } = await import('@tauri-apps/api/core')
+				invoke('quit_app')
+			} else {
+				window.close()
+			}
+		},
+	},
 ]
 
 // Button factory - functional approach with popover

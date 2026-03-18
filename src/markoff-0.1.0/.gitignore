@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+dev-dist
+*.local
+*.log
+
+# Tauri
+src-tauri/target/
+src-tauri/gen/
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sw?
+
+# OS
+.DS_Store
+
+# Tooling
+.superpowers/
